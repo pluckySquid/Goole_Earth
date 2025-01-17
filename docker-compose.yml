@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  google_earth_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: google_earth_server
+    ports:
+      - "8000:8000"  # If your server/app needs to listen here
+    environment:
+      SERVER_NAME: sql_server,1433  # Reference SQL Server service
+      DATABASE_NAME: your_database_name
+      USERNAME: sa
+      PASSWORD: YourStrong!Password
+    volumes:
+      - .:/app  # Mount the current directory to /app in the container
+    depends_on:
+      - sql_server  # Ensure SQL Server starts before this service
+
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql_server
+    platform: linux/amd64
+    ports:
+      - "1433:1433"  # Map container's port 1433 to host's port 1433
+    environment:
+      SA_PASSWORD: "YourStrong!Password"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sql_data:/var/opt/mssql  # Persist database data
+
+volumes:
+  sql_data:
