@@ -25,10 +25,12 @@ def init_db():
     """
     conn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};'
                           f'SERVER={server_name};'
-                          f'DATABASE={database_name};'
+                          f'DATABASE=master;'
                           f'UID={username};'
                           f'PWD={password};'
-                          f'Encrypt=no;')
+                          'Encrypt=no;',
+                          autocommit=True  # Enable autocommit mode
+                          )
     cursor = conn.cursor()
 
     # Check if the database exists

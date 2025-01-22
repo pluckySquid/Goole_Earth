@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   google_earth_server:
     build:
